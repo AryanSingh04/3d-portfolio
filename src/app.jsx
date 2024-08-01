@@ -4,7 +4,7 @@ import './app.css'
 import { BrowserRouter as Router,Routes,Route } from 'react-router-dom'
 import Navbar from './Components/Navbar'
 
-export function App() {
+const App=()=> {
  return (
   <div className=' bg-gray-300'>
     <Router>
@@ -20,3 +20,4 @@ export function App() {
   </div>
  )
 }
+export default App;
