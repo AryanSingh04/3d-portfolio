@@ -32,7 +32,7 @@ const Island=({isRotating,setIsRotating,setCurrentStage,...props})=> {
     e.stopPropagation()
     e.preventDefault()
   if(isRotating) {
-    const clientX =e.touches ?e.touches[0].clientX :e.clientX;
+    const clientX =e.touches ? e.touches[0].clientX :e.clientX;
    const delta=(clientX-lastX.current)/viewport.width
    islandRef.current.rotation.y+=delta*0.01*Math.PI
    lastX.current=clientX
@@ -117,17 +117,28 @@ const Island=({isRotating,setIsRotating,setCurrentStage,...props})=> {
     const canvas=gl.domElement
  canvas.addEventListener("pointerup",handlePointerUp)
  canvas.addEventListener("pointerdown",handlePointerDown)
+ 
  canvas.addEventListener("pointermove",handlePointerMove)
- document.addEventListener("keyup",handleKeyUp)
- document.addEventListener("keydown",handleKeyDown)
+ canvas.addEventListener("touchstart", handlePointerDown);
+  canvas.addEventListener("touchmove", handlePointerMove);
+  canvas.addEventListener("touchend", handlePointerUp);
 
- return ()=>{
-    canvas.removeEventListener('pointerdown',handlePointerDown)
-    canvas.removeEventListener('pointerup',handlePointerUp)
-    canvas.removeEventListener('pointermove',handlePointerMove)
-    document.removeEventListener("keyup",handleKeyUp)
-    document.removeEventListener("keydown",handleKeyDown)
- }
+  document.addEventListener("keydown", handleKeyDown);
+  document.addEventListener("keyup", handleKeyUp);
+
+  // Cleanup event listeners
+  return () => {
+    canvas.removeEventListener('pointerdown', handlePointerDown);
+    canvas.removeEventListener('pointermove', handlePointerMove);
+    canvas.removeEventListener('pointerup', handlePointerUp);
+    
+    canvas.removeEventListener('touchstart', handlePointerDown);
+    canvas.removeEventListener('touchmove', handlePointerMove);
+    canvas.removeEventListener('touchend', handlePointerUp);
+
+    document.removeEventListener("keydown", handleKeyDown);
+    document.removeEventListener("keyup", handleKeyUp);
+  };
 
   },[gl,viewport,handlePointerDown,handlePointerMove,handlePointerUp])
 
